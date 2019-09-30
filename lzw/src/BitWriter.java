@@ -1,19 +1,15 @@
-import java.io.File;
-import java.io.FileWriter;
+import java.io.Writer;
 import java.io.IOException;
 
-public class BitTool {
-    private static int startCodeSize = 8; // in bits
+class BitWriter {
 
-    public BitTool( String outFileName, Logger logger ) {
-        this.logger = logger;
-        try {
-            outFile = new FileWriter(outFileName);
-        } catch (IOException e) {
-            logger.registerLog(Logger.ErrorType.BAD_FILE, e.getMessage());
-        }
+    BitWriter( Writer writer ) {
+        this.outFile = writer;
 
         pointer = 0;
+
+        // in bits
+        int startCodeSize = 9;
         codeSize = startCodeSize;
         buffer = new byte[startCodeSize];
 
@@ -21,14 +17,13 @@ public class BitTool {
             c = -128;
     }
 
-    public void setCodeSize( int size ) {
+    void setCodeSize( int size ) {
         flushBuffer();
         // no '-128' code. '-128' is border of dictionaries with different size
     }
 
-
     // suppose big-endian: 1_10=10000000_2, not 00000001_2
-    public void writeCode( int code ) {
+    void writeCode( int code ) {
         for (int i = 0; i < codeSize; i++) {
             int bit = code & (1 << i);
             buffer[pointer / 8] |= (bit << (pointer % 8));
@@ -51,6 +46,6 @@ public class BitTool {
     private int pointer; // bit where we are now
     private int codeSize;
     private byte[] buffer;
-    private FileWriter outFile;
+    private Writer outFile;
     private Logger logger;
 }

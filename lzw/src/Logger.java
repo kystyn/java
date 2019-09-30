@@ -1,23 +1,29 @@
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Logger {
-    public enum ErrorType {
+class Logger {
+    enum ErrorType {
         BAD_FILE("Bad file name"),
-        BAD_WRITE("Error while FileWriter::write");
+        BAD_READ("Error while FileReader.read"),
+        BAD_WRITE("Error while FileWriter.write"),
+        BAD_OP("Bad operation mentioned");
 
         ErrorType( String errorMsg ) {
             this.errorMsg = errorMsg;
         }
 
-        public String get() {
+        private String get() {
             return errorMsg;
         }
 
         private String errorMsg;
     }
 
-    public Logger( String logName ) {
+    static {
+        logger = new Logger("troubles.log");
+    }
+
+    private Logger( String logName ) {
         try {
             logFile = new FileWriter(logName);
         } catch (IOException e) {
@@ -25,17 +31,25 @@ public class Logger {
         }
     }
 
-    public void registerLog( ErrorType error, String msg ) {
+    void registerLog( ErrorType error, String msg ) {
         try {
             logFile.write(error.get());
         } catch (IOException e) {
             System.out.println("Error: "  + e.getMessage() + msg);
         }
+        finally {
+            System.exit(0);
+        }
     }
 
-    public void registerLog( ErrorType error ) {
+    void registerLog( ErrorType error ) {
         registerLog(error, "");
     }
 
+    static Logger get() {
+        return logger;
+    }
+
     private FileWriter logFile;
+    private static Logger logger;
 }
