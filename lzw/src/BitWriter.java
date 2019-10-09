@@ -27,6 +27,7 @@ class BitWriter {
         for (int i = 0; i < codeSize; i++) {
             int bit = code & (1 << i);
             buffer[pointer / 8] |= (bit << (pointer % 8));
+            pointer++;
         }
 
         if (pointer == codeSize * 8)

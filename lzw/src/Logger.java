@@ -6,6 +6,7 @@ class Logger {
         BAD_FILE("Bad file name"),
         BAD_READ("Error while FileReader.read"),
         BAD_WRITE("Error while FileWriter.write"),
+        BAD_GRAMMAR( "Bad lexem sequence"),
         BAD_OP("Bad operation mentioned");
 
         ErrorType( String errorMsg ) {
