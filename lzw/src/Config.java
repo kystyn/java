@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,8 +27,8 @@ class Config {
         OUTPUT_FILE("OutputFile"),
         MODE("Mode"),
         ALPHABET("Alphabet"),
-        VAL_DELIMITER(" *= *"),
-        PARAM_DELIMITER("\n+"),
+        VAL_DELIMITER(" {2,}= {2,}"),
+        //PARAM_DELIMITER("[\n+]"),
         ALPHABET_DELIMITER(" ");
 
         Grammar( String s ) { lexem = s; }
@@ -46,12 +47,11 @@ class Config {
 
     void reloadConfig() {
         try {
-            FileReader f = new FileReader(configName);
+            BufferedReader f = new BufferedReader(new FileReader(configName));
 
-            String[] lines = Files.readAllLines(Paths.get(inputFileName))
-                    .toString().split(Grammar.PARAM_DELIMITER.toString());
+            List<String> lines = f.lines().collect(Collectors.toList());
 
-            for (String  l : lines) {
+            for (String l : lines) {
                 String[] val = l.split(Grammar.VAL_DELIMITER.toString());
                 if (val.length != 2)
                     Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR, "Double assignment");
@@ -74,8 +74,6 @@ class Config {
 
         } catch (FileNotFoundException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_FILE, e.getMessage());
-        } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
         }
     }
 

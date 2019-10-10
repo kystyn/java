@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
@@ -13,6 +14,7 @@ class Compressor {
 
     Compressor( String configName ) {
         config = new Config(configName);
+        dictionary = new ArrayList<String>();
 
         openFiles(config.getInputFileName(), config.getOutputFileName());
         if (config.getMode() == Config.Mode.COMPRESS)
@@ -21,10 +23,11 @@ class Compressor {
             Decompress();
     }
 
-    void Compress() {
+    private void Compress() {
         try {
             // add atomics in dictionary
             dictionary.addAll(Arrays.asList(config.getAlphabet()));
+            writer.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
 
             String syms;
             String cur = "";
@@ -33,7 +36,7 @@ class Compressor {
                 for (int i = 1; i < syms.length(); i++) {
                     char c = syms.charAt(i);
 
-                    if (!config.getAlphabet().toString().contains(new String(new char[]{c})))
+                    if (!dictionary.contains(new String(new char[]{c})))
                         Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR, "Element not in alphabet");
 
                     String expanded = cur + c;
@@ -49,15 +52,18 @@ class Compressor {
                 }
             }
             writer.writeCode(dictionary.indexOf(cur));
+            inputFile.close();
+            writer.close();
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
         }
     }
 
-    void Decompress() {
+    private void Decompress() {
 
         // add atomics in dictionary
         dictionary.addAll(Arrays.asList(config.getAlphabet()));
+        reader.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
 
         Integer codeOld = 0, codeCur = 0;
         if (!reader.readCode(codeOld))
@@ -78,17 +84,25 @@ class Compressor {
             dictionary.add(dictionary.get(codeOld) + cur.charAt(0));
             codeOld = codeCur;
         }
+        reader.close();
+        try {
+            outputFile.close();
+        } catch (IOException e) {
+            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+        }
     }
 
     private void openFiles( String in, String out) {
         try {
-            if (config.getMode() == Config.Mode.COMPRESS) {
+            switch (config.getMode()) {
+            case COMPRESS:
                 inputFile = new BufferedReader(new FileReader(in));
                 writer = new BitWriter(new BufferedWriter(new FileWriter(out)));
-            }
-            else {
+                break;
+            case DECOMPRESS:
                 outputFile = new BufferedWriter(new FileWriter(out));
                 reader = new BitReader(new BufferedReader(new FileReader(in)));
+                break;
             }
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_FILE, e.getMessage());

@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -26,7 +27,7 @@ class Logger {
 
     private Logger( String logName ) {
         try {
-            logFile = new FileWriter(logName);
+            logFile = new BufferedWriter(new FileWriter(logName));
         } catch (IOException e) {
             System.out.println("Bad log name" + logName);
         }
@@ -34,11 +35,16 @@ class Logger {
 
     void registerLog( ErrorType error, String msg ) {
         try {
-            logFile.write(error.get());
+            logFile.write(error.get() + " " + msg);
         } catch (IOException e) {
-            System.out.println("Error: "  + e.getMessage() + msg);
+            System.out.println("Error: "  + e.getMessage());
         }
         finally {
+            try {
+                logFile.close();
+            } catch (IOException e) {
+                System.out.println("Error: "  + e.getMessage());
+            }
             System.exit(0);
         }
     }
@@ -51,6 +57,6 @@ class Logger {
         return logger;
     }
 
-    private FileWriter logFile;
+    private BufferedWriter logFile;
     private static Logger logger;
 }

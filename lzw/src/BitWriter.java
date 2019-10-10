@@ -1,25 +1,39 @@
+import java.io.BufferedWriter;
 import java.io.Writer;
 import java.io.IOException;
 
 class BitWriter {
 
-    BitWriter( Writer writer ) {
+    BitWriter( BufferedWriter writer ) {
         this.outFile = writer;
 
         pointer = 0;
 
         // in bits
-        int startCodeSize = 9;
-        codeSize = startCodeSize;
-        buffer = new byte[startCodeSize];
-
-        for (byte c : buffer)
-            c = -128;
+        codeSize = 9;
+        setCodeSize(codeSize);
     }
 
     void setCodeSize( int size ) {
+        if (size == codeSize)
+            return;
+
+        codeSize = size;
         flushBuffer();
+        buffer = new byte[codeSize];
+
+        for (byte c : buffer)
+            c = -128;
         // no '-128' code. '-128' is border of dictionaries with different size
+    }
+
+    void close() {
+        try {
+            flushBuffer();
+            outFile.close();
+        } catch (IOException e) {
+            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+        }
     }
 
     // suppose big-endian: 1_10=10000000_2, not 00000001_2
@@ -40,13 +54,12 @@ class BitWriter {
             for (byte b : buffer)
                 outFile.write(b);
         } catch (IOException e) {
-            logger.registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
         }
     }
 
     private int pointer; // bit where we are now
     private int codeSize;
     private byte[] buffer;
-    private Writer outFile;
-    private Logger logger;
+    private BufferedWriter outFile;
 }

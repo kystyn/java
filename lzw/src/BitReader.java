@@ -5,11 +5,22 @@ class BitReader {
     BitReader( BufferedReader reader ) {
         codeSize = 9;
         inFile = reader;
-        pointer = 0;
+        pointer = codeSize * 8;
+        setCodeSize(codeSize);
     }
 
     void setCodeSize( int codeSize ) {
+
         this.codeSize = codeSize;
+        this.buffer = new byte[codeSize];
+    }
+
+    void close() {
+        try {
+            inFile.close();
+        } catch (IOException e) {
+            Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+        }
     }
 
     boolean readCode( Integer code ) {
@@ -18,13 +29,14 @@ class BitReader {
             for (int i = 0; i < buffer.length && !finish; i++)
                 try {
                     buffer[i] = (byte) (inFile.read());
-                    finish = (buffer[i] != -1);
+                    finish = (buffer[i] == -1);
                 } catch (IOException e) {
                     Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
                 }
 
             if (finish)
                 return false;
+            pointer = 0;
         }
 
         for (int i = 0; i < codeSize; i++) {
