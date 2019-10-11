@@ -30,14 +30,21 @@ class Compressor {
             writer.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
 
             String syms;
-            String cur = "";
+            String cur;
+            char [] first = new char[1];
+
+            int res = inputFile.read(first, 0, 1);
+            if (res == -1)
+                Logger.get().registerLog(Logger.ErrorType.BAD_READ, "Empty file");
+            cur = new String(first);
+
             while ((syms = inputFile.readLine()) != null) {
-                cur = new String(new char[]{syms.charAt(0)});
-                for (int i = 1; i < syms.length(); i++) {
+                for (int i = 0; i < syms.length(); i++) {
                     char c = syms.charAt(i);
 
                     if (!dictionary.contains(new String(new char[]{c})))
-                        Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR, "Element not in alphabet");
+                        Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR,
+                                "Element is not in alphabet");
 
                     String expanded = cur + c;
 
@@ -63,29 +70,22 @@ class Compressor {
 
         // add atomics in dictionary
         dictionary.addAll(Arrays.asList(config.getAlphabet()));
+
         reader.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
-
-        Integer codeOld = 0, codeCur = 0;
-        if (!reader.readCode(codeOld))
-            Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
         try {
+            Integer codeOld = 0, codeCur = 0;
+            if (!reader.readCode(codeOld))
+                Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
             outputFile.write(dictionary.get(codeOld));
-        } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
-        }
-        while (reader.readCode(codeCur)) {
-            String cur = dictionary.get(codeCur);
-            try {
-                outputFile.write(cur);
-            } catch (IOException e) {
-                Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
-            }
 
-            dictionary.add(dictionary.get(codeOld) + cur.charAt(0));
-            codeOld = codeCur;
-        }
-        reader.close();
-        try {
+            while (reader.readCode(codeCur)) {
+                String cur = dictionary.get(codeCur);
+                outputFile.write(cur);
+
+                dictionary.add(dictionary.get(codeOld) + cur);
+                codeOld = codeCur;
+            }
+            reader.close();
             outputFile.close();
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());

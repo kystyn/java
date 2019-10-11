@@ -3,10 +3,9 @@ import java.io.IOException;
 
 class BitReader {
     BitReader( BufferedReader reader ) {
-        codeSize = 9;
         inFile = reader;
+        setCodeSize(9);
         pointer = codeSize * 8;
-        setCodeSize(codeSize);
     }
 
     void setCodeSize( int codeSize ) {

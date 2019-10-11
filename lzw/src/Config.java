@@ -2,11 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 class Config {
     enum Mode {
@@ -28,7 +24,6 @@ class Config {
         MODE("Mode"),
         ALPHABET("Alphabet"),
         VAL_DELIMITER(" {2,}= {2,}"),
-        //PARAM_DELIMITER("[\n+]"),
         ALPHABET_DELIMITER(" ");
 
         Grammar( String s ) { lexem = s; }
@@ -45,13 +40,20 @@ class Config {
         reloadConfig();
     }
 
-    void reloadConfig() {
+    private void reloadConfig() {
         try {
             BufferedReader f = new BufferedReader(new FileReader(configName));
 
-            List<String> lines = f.lines().collect(Collectors.toList());
+            String l = null;
 
-            for (String l : lines) {
+            while (true) {
+                try {
+                    l = f.readLine();
+                    if (l == null)
+                        break;
+                } catch (IOException e) {
+                    Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+                }
                 String[] val = l.split(Grammar.VAL_DELIMITER.toString());
                 if (val.length != 2)
                     Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR, "Double assignment");

@@ -6,12 +6,10 @@ class BitWriter {
 
     BitWriter( BufferedWriter writer ) {
         this.outFile = writer;
-
         pointer = 0;
-
+        buffer = null;
         // in bits
-        codeSize = 9;
-        setCodeSize(codeSize);
+        setCodeSize(9);
     }
 
     void setCodeSize( int size ) {
@@ -51,6 +49,8 @@ class BitWriter {
     private void flushBuffer() {
         try {
             pointer = 0;
+            if (buffer == null)
+                return;
             for (byte b : buffer)
                 outFile.write(b);
         } catch (IOException e) {
