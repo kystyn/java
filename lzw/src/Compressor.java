@@ -76,13 +76,19 @@ class Compressor {
             Integer codeOld = 0, codeCur = 0;
             if (!reader.readCode(codeOld))
                 Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
-            outputFile.write(dictionary.get(codeOld));
+            char sym = dictionary.get(codeOld).charAt(0);
+            outputFile.write(sym);
 
             while (reader.readCode(codeCur)) {
                 String cur = dictionary.get(codeCur);
-                outputFile.write(cur);
+                if (!dictionary.contains(cur)) {
+                    cur = dictionary.get(codeOld);
+                    cur += sym;
+                }
 
-                dictionary.add(dictionary.get(codeOld) + cur);
+                outputFile.write(cur);
+                sym = cur.charAt(0);
+                dictionary.add(dictionary.get(codeOld) + sym);
                 codeOld = codeCur;
             }
             reader.close();
