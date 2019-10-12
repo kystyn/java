@@ -48,7 +48,7 @@ class Compressor {
 
                     String expanded = cur + c;
 
-                    if (dictionary.contains(expanded)){
+                    if (dictionary.contains(expanded)) {
                         cur = expanded;
                     }
                     else {
@@ -76,17 +76,14 @@ class Compressor {
             int[] codeOld = new int[1], codeCur = new int[1];
             if (!reader.readCode(codeOld))
                 Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
-            char sym = dictionary.get(codeOld[0]).charAt(0);
-            outputFile.write(sym);
+            String old = dictionary.get(codeOld[0]);
+            outputFile.write(old);
+            char sym;
 
             while (reader.readCode(codeCur)) {
                 String cur = dictionary.get(codeCur[0]);
-                if (!dictionary.contains(cur)) {
-                    cur = dictionary.get(codeOld[0]);
-                    cur += sym;
-                }
-
                 outputFile.write(cur);
+
                 sym = cur.charAt(0);
                 dictionary.add(dictionary.get(codeOld[0]) + sym);
                 codeOld = codeCur;

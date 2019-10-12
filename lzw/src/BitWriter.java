@@ -48,8 +48,7 @@ class BitWriter {
             pointer = 0;
             if (buffer == null)
                 return;
-            for (char b : buffer)
-                outFile.write(b);
+            outFile.write(buffer, 0, buffer.length);
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
         }

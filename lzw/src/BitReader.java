@@ -39,6 +39,7 @@ class BitReader {
 
         //int codeVal = 0;
 
+        code[0] = 0;
         for (int i = 0; i < codeSize; i++) {
             int bit = (buffer[pointer / 8] & (1 << (pointer % 8))) >> (pointer % 8);
             code[0] |= (bit << (codeSize - 1 - i));
