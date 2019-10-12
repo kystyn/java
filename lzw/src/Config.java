@@ -24,7 +24,7 @@ class Config {
         MODE("Mode"),
         ALPHABET("Alphabet"),
         VAL_DELIMITER(" {2,}= {2,}"),
-        ALPHABET_DELIMITER(" ");
+        ALPHABET_DELIMITER(", ");
 
         Grammar( String s ) { lexem = s; }
 

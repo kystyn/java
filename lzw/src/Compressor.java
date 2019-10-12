@@ -3,12 +3,9 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class Compressor {
 
@@ -31,18 +28,21 @@ class Compressor {
 
             String syms;
             String cur;
-            char [] first = new char[1];
+            char[] first = new char[1];
 
             int res = inputFile.read(first, 0, 1);
             if (res == -1)
                 Logger.get().registerLog(Logger.ErrorType.BAD_READ, "Empty file");
             cur = new String(first);
 
+            String toFindInDict = "a";
+
             while ((syms = inputFile.readLine()) != null) {
                 for (int i = 0; i < syms.length(); i++) {
                     char c = syms.charAt(i);
+                    toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), c);
 
-                    if (!dictionary.contains(new String(new char[]{c})))
+                    if (!dictionary.contains(toFindInDict))
                         Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR,
                                 "Element is not in alphabet");
 
@@ -54,7 +54,7 @@ class Compressor {
                     else {
                         writer.writeCode(dictionary.indexOf(cur));
                         dictionary.add(expanded);
-                        cur = new String(new char[]{c});
+                        cur = toFindInDict;
                     }
                 }
             }
@@ -73,22 +73,22 @@ class Compressor {
 
         reader.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
         try {
-            Integer codeOld = 0, codeCur = 0;
+            int[] codeOld = new int[1], codeCur = new int[1];
             if (!reader.readCode(codeOld))
                 Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
-            char sym = dictionary.get(codeOld).charAt(0);
+            char sym = dictionary.get(codeOld[0]).charAt(0);
             outputFile.write(sym);
 
             while (reader.readCode(codeCur)) {
-                String cur = dictionary.get(codeCur);
+                String cur = dictionary.get(codeCur[0]);
                 if (!dictionary.contains(cur)) {
-                    cur = dictionary.get(codeOld);
+                    cur = dictionary.get(codeOld[0]);
                     cur += sym;
                 }
 
                 outputFile.write(cur);
                 sym = cur.charAt(0);
-                dictionary.add(dictionary.get(codeOld) + sym);
+                dictionary.add(dictionary.get(codeOld[0]) + sym);
                 codeOld = codeCur;
             }
             reader.close();

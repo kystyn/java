@@ -7,6 +7,7 @@ class BitWriter {
     BitWriter( BufferedWriter writer ) {
         this.outFile = writer;
         pointer = 0;
+        codeSize = -1;
         buffer = null;
         // in bits
         setCodeSize(9);
@@ -18,11 +19,7 @@ class BitWriter {
 
         codeSize = size;
         flushBuffer();
-        buffer = new byte[codeSize];
-
-        for (byte c : buffer)
-            c = -128;
-        // no '-128' code. '-128' is border of dictionaries with different size
+        buffer = new char[codeSize];
     }
 
     void close() {
@@ -37,7 +34,7 @@ class BitWriter {
     // suppose big-endian: 1_10=10000000_2, not 00000001_2
     void writeCode( int code ) {
         for (int i = 0; i < codeSize; i++) {
-            int bit = code & (1 << i);
+            int bit = (code & (1 << (codeSize - 1 - i))) >> (codeSize - 1 - i);
             buffer[pointer / 8] |= (bit << (pointer % 8));
             pointer++;
         }
@@ -51,7 +48,7 @@ class BitWriter {
             pointer = 0;
             if (buffer == null)
                 return;
-            for (byte b : buffer)
+            for (char b : buffer)
                 outFile.write(b);
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
@@ -60,6 +57,6 @@ class BitWriter {
 
     private int pointer; // bit where we are now
     private int codeSize;
-    private byte[] buffer;
+    private char[] buffer;
     private BufferedWriter outFile;
 }
