@@ -23,7 +23,7 @@ class Compressor {
     private void Compress() {
         try {
             // add atomics in dictionary
-            dictionary.addAll(Arrays.asList(config.getAlphabet()));
+            dictionary.addAll(config.getAlphabet());
             writer.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
 
             String syms;
@@ -69,7 +69,7 @@ class Compressor {
     private void Decompress() {
 
         // add atomics in dictionary
-        dictionary.addAll(Arrays.asList(config.getAlphabet()));
+        dictionary.addAll(config.getAlphabet());
 
         reader.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
         try {
@@ -86,7 +86,7 @@ class Compressor {
 
                 sym = cur.charAt(0);
                 dictionary.add(dictionary.get(codeOld[0]) + sym);
-                codeOld = codeCur;
+                codeOld = codeCur.clone();
             }
             reader.close();
             outputFile.close();

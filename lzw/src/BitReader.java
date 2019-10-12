@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 class BitReader {
     BitReader( BufferedReader reader ) {
@@ -11,7 +12,8 @@ class BitReader {
     void setCodeSize( int codeSize ) {
 
         this.codeSize = codeSize;
-        this.buffer = new char[codeSize];
+        buffer = new char[codeSize];
+        Arrays.fill(buffer, (char)0);
     }
 
     void close() {
@@ -48,7 +50,7 @@ class BitReader {
 
         //code = codeVal;
 
-        return true;
+        return code[0] != (1 << codeSize) - 1;
     }
 
     private BufferedReader inFile;

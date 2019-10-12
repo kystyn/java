@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.Writer;
 import java.io.IOException;
+import java.util.Arrays;
 
 class BitWriter {
 
@@ -39,16 +40,24 @@ class BitWriter {
             pointer++;
         }
 
-        if (pointer == codeSize * 8)
+        if (pointer == codeSize * 8) {
+            pointer = 0;
             flushBuffer();
+        }
     }
 
     private void flushBuffer() {
         try {
-            pointer = 0;
             if (buffer == null)
                 return;
+
+            if (pointer != 0)
+                writeCode((1 << codeSize) - 1);
             outFile.write(buffer, 0, buffer.length);
+            pointer = 0;
+
+            Arrays.fill(buffer, (char)0);
+
         } catch (IOException e) {
             Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
         }

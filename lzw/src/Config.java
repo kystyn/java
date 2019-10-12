@@ -2,6 +2,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 class Config {
@@ -37,6 +40,7 @@ class Config {
 
     Config( String fileName ) {
         this.configName = fileName;
+        this.alphabet = new ArrayList<String>();
         reloadConfig();
     }
 
@@ -70,8 +74,10 @@ class Config {
                     else
                         Logger.get().registerLog(Logger.ErrorType.BAD_OP);
                 }
-                else if (val[0].equalsIgnoreCase(Grammar.ALPHABET.toString()))
-                    alphabet = val[1].split(Grammar.ALPHABET_DELIMITER.toString());
+                else if (val[0].equalsIgnoreCase(Grammar.ALPHABET.toString())) {
+                    alphabet.addAll(Arrays.asList(val[1].split(Grammar.ALPHABET_DELIMITER.toString())));
+                    alphabet.add("\n");
+                }
             }
 
         } catch (FileNotFoundException e) {
@@ -91,12 +97,12 @@ class Config {
         return mode;
     }
 
-    String[] getAlphabet() {
+    List<String> getAlphabet() {
         return alphabet;
     }
 
     private String configName;
     private String inputFileName, outputFileName;
     private Mode mode;
-    private String[] alphabet; // like abcdef...
+    private List<String> alphabet; // like abcdef...
 }
