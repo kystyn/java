@@ -38,13 +38,17 @@ class Compressor {
             String toFindInDict = "a";
 
             while ((syms = inputFile.readLine()) != null) {
+                syms += "\n";
                 for (int i = 0; i < syms.length(); i++) {
                     char c = syms.charAt(i);
                     toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), c);
 
-                    if (!dictionary.contains(toFindInDict))
-                        Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR,
-                                "Element is not in alphabet");
+                    if (!dictionary.contains(toFindInDict)) {
+                        continue;
+                        //Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR,
+                        //        "Element " + toFindInDict + " is not in alphabet");
+                    }
+
 
                     String expanded = cur + c;
 
@@ -53,7 +57,8 @@ class Compressor {
                     }
                     else {
                         writer.writeCode(dictionary.indexOf(cur));
-                        dictionary.add(expanded);
+                        if (dictionary.size() < (1 << writer.getCodeSize()) - 1)
+                            dictionary.add(expanded);
                         cur = toFindInDict;
                     }
                 }
@@ -85,7 +90,9 @@ class Compressor {
                 outputFile.write(cur);
 
                 sym = cur.charAt(0);
-                dictionary.add(dictionary.get(codeOld[0]) + sym);
+
+                if (dictionary.size() < (1 << reader.getCodeSize()) - 1)
+                    dictionary.add(dictionary.get(codeOld[0]) + sym);
                 codeOld = codeCur.clone();
             }
             reader.close();

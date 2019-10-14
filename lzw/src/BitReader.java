@@ -53,6 +53,10 @@ class BitReader {
         return code[0] != (1 << codeSize) - 1;
     }
 
+    int getCodeSize() {
+        return codeSize;
+    }
+
     private BufferedReader inFile;
     private int pointer;
     private int codeSize;

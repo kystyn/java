@@ -63,6 +63,10 @@ class BitWriter {
         }
     }
 
+    int getCodeSize() {
+        return codeSize;
+    }
+
     private int pointer; // bit where we are now
     private int codeSize;
     private char[] buffer;
