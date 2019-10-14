@@ -38,9 +38,9 @@ class Compressor {
             String toFindInDict = "a";
 
             while ((syms = inputFile.readLine()) != null) {
-                syms += "\n";
-                for (int i = 0; i < syms.length(); i++) {
-                    char c = syms.charAt(i);
+                //syms += "\n";
+                for (int i = 0; i <= syms.length(); i++) {
+                    char c = i != syms.length() ? syms.charAt(i) : '\n';
                     toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), c);
 
                     if (!dictionary.contains(toFindInDict)) {
