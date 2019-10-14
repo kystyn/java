@@ -4,7 +4,6 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class Compressor {
@@ -13,7 +12,8 @@ class Compressor {
         config = new Config(configName);
         dictionary = new ArrayList<String>();
 
-        openFiles(config.getInputFileName(), config.getOutputFileName());
+        if (!openFiles(config.getInputFileName(), config.getOutputFileName()))
+            return;
         if (config.getMode() == Config.Mode.COMPRESS)
             Compress();
         else
@@ -31,8 +31,10 @@ class Compressor {
             char[] first = new char[1];
 
             int res = inputFile.read(first, 0, 1);
-            if (res == -1)
-                Logger.get().registerLog(Logger.ErrorType.BAD_READ, "Empty file");
+            if (res == -1) {
+                Logger.get().registerFatalLog(Logger.MsgType.BAD_READ, "Empty file");
+                return;
+            }
             cur = new String(first);
 
             String toFindInDict = "a";
@@ -66,8 +68,9 @@ class Compressor {
             writer.writeCode(dictionary.indexOf(cur));
             inputFile.close();
             writer.close();
+            Logger.get().registerLog(Logger.MsgType.INFO, "Compressor: closed files");
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+            Logger.get().registerFatalLog(Logger.MsgType.BAD_READ, e.getMessage());
         }
     }
 
@@ -80,7 +83,7 @@ class Compressor {
         try {
             int[] codeOld = new int[1], codeCur = new int[1];
             if (!reader.readCode(codeOld))
-                Logger.get().registerLog(Logger.ErrorType.BAD_FILE, "Empty file");
+                Logger.get().registerLog(Logger.MsgType.BAD_FILE, "Empty file");
             String old = dictionary.get(codeOld[0]);
             outputFile.write(old);
             char sym;
@@ -97,12 +100,13 @@ class Compressor {
             }
             reader.close();
             outputFile.close();
+            Logger.get().registerLog(Logger.MsgType.INFO, "Decompressor: closed files");
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+            Logger.get().registerFatalLog(Logger.MsgType.BAD_WRITE, e.getMessage());
         }
     }
 
-    private void openFiles( String in, String out) {
+    private boolean openFiles( String in, String out) {
         try {
             switch (config.getMode()) {
             case COMPRESS:
@@ -115,8 +119,11 @@ class Compressor {
                 break;
             }
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_FILE, e.getMessage());
+            Logger.get().registerFatalLog(Logger.MsgType.BAD_FILE, e.getMessage());
+            return false;
         }
+        Logger.get().registerLog(Logger.MsgType.INFO, "Opened files " + in + " " + out);
+        return true;
     }
 
     private BufferedReader inputFile;

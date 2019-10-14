@@ -1,5 +1,4 @@
 import java.io.BufferedWriter;
-import java.io.Writer;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -28,7 +27,7 @@ class BitWriter {
             flushBuffer();
             outFile.close();
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+            Logger.get().registerFatalLog(Logger.MsgType.BAD_WRITE, e.getMessage());
         }
     }
 
@@ -59,7 +58,7 @@ class BitWriter {
             Arrays.fill(buffer, (char)0);
 
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_WRITE, e.getMessage());
+            Logger.get().registerFatalLog(Logger.MsgType.BAD_WRITE, e.getMessage());
         }
     }
 

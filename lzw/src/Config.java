@@ -56,11 +56,11 @@ class Config {
                     if (l == null)
                         break;
                 } catch (IOException e) {
-                    Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+                    Logger.get().registerLog(Logger.MsgType.BAD_READ, e.getMessage());
                 }
                 String[] val = l.split(Grammar.VAL_DELIMITER.toString());
                 if (val.length != 2)
-                    Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR, "Double assignment");
+                    Logger.get().registerLog(Logger.MsgType.BAD_GRAMMAR, "Double assignment");
 
                 if (val[0].equalsIgnoreCase(Grammar.INPUT_FILE.toString()))
                     inputFileName = val[1];
@@ -72,7 +72,7 @@ class Config {
                     else if (val[1].equalsIgnoreCase(Mode.DECOMPRESS.toString()))
                         mode = Mode.DECOMPRESS;
                     else
-                        Logger.get().registerLog(Logger.ErrorType.BAD_OP);
+                        Logger.get().registerLog(Logger.MsgType.BAD_OP);
                 }
                 else if (val[0].equalsIgnoreCase(Grammar.ALPHABET.toString())) {
                     alphabet.addAll(Arrays.asList(val[1].split(Grammar.ALPHABET_DELIMITER.toString())));
@@ -81,7 +81,7 @@ class Config {
             }
 
         } catch (FileNotFoundException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_FILE, e.getMessage());
+            Logger.get().registerLog(Logger.MsgType.BAD_FILE, e.getMessage());
         }
     }
 

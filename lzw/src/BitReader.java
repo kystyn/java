@@ -20,7 +20,7 @@ class BitReader {
         try {
             inFile.close();
         } catch (IOException e) {
-            Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+            Logger.get().registerLog(Logger.MsgType.BAD_READ, e.getMessage());
         }
     }
 
@@ -33,7 +33,7 @@ class BitReader {
                     return false;
             }
             catch (IOException e) {
-                Logger.get().registerLog(Logger.ErrorType.BAD_READ, e.getMessage());
+                Logger.get().registerLog(Logger.MsgType.BAD_READ, e.getMessage());
             }
 
             pointer = 0;
