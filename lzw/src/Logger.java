@@ -4,12 +4,12 @@ import java.io.IOException;
 
 class Logger {
     enum MsgType {
-        BAD_FILE("Bad file name"),
-        BAD_READ("Error while FileReader.read"),
-        BAD_WRITE("Error while FileWriter.write"),
-        BAD_GRAMMAR( "Bad lexem sequence"),
-        BAD_OP("Bad operation mentioned"),
-        INFO(" Info message");
+        BAD_FILE("Bad file name: "),
+        BAD_READ("Error while FileReader.read: "),
+        BAD_WRITE("Error while FileWriter.write: "),
+        BAD_GRAMMAR( "Bad lexem sequence: "),
+        BAD_OP("Bad operation mentioned: "),
+        INFO("Info message: ");
 
         MsgType( String errorMsg ) {
             this.errorMsg = errorMsg;

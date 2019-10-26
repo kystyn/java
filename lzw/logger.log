@@ -1,2 +1,3 @@
- Info message Opened files nod.txt nod.out
- Info message Compressor: closed files
+Info message:  vim.dec file opened
+Info message:  vim.out file opened
+Info message:  Decompressor: closed files

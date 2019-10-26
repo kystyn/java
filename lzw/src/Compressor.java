@@ -26,7 +26,6 @@ class Compressor {
             dictionary.addAll(config.getAlphabet());
             writer.setCodeSize((int)(Math.log(dictionary.size()) / Math.log(2)) + 2);
 
-            String syms;
             String cur;
             char[] first = new char[1];
 
@@ -39,25 +38,26 @@ class Compressor {
 
             String toFindInDict = "a";
 
-            while ((syms = inputFile.readLine()) != null) {
+            final int bufferSize = 100;
+            char[] syms = new char[bufferSize];
+            int trueSize;
+
+            while ((trueSize = inputFile.read(syms)) != -1) {
                 //syms += "\n";
-                for (int i = 0; i <= syms.length(); i++) {
-                    char c = i != syms.length() ? syms.charAt(i) : '\n';
-                    toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), c);
+                for (int i = 0; i < trueSize; i++) {
+                    toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), syms[i]);
 
                     if (!dictionary.contains(toFindInDict)) {
+                        Logger.get().registerLog(Logger.MsgType.BAD_GRAMMAR,
+                                "Element " + toFindInDict + " is not in alphabet");
                         continue;
-                        //Logger.get().registerLog(Logger.ErrorType.BAD_GRAMMAR,
-                        //        "Element " + toFindInDict + " is not in alphabet");
                     }
 
-
-                    String expanded = cur + c;
+                    String expanded = cur + syms[i];
 
                     if (dictionary.contains(expanded)) {
                         cur = expanded;
-                    }
-                    else {
+                    } else {
                         writer.writeCode(dictionary.indexOf(cur));
                         if (dictionary.size() < (1 << writer.getCodeSize()) - 1)
                             dictionary.add(expanded);
@@ -89,7 +89,13 @@ class Compressor {
             char sym;
 
             while (reader.readCode(codeCur)) {
-                String cur = dictionary.get(codeCur[0]);
+                String cur;
+                if (codeCur[0] >= dictionary.size()) {
+                    Logger.get().registerFatalLog(Logger.MsgType.BAD_READ, "No " + codeCur[0] + " code");
+                    outputFile.close();
+                    return;
+                }
+                cur = dictionary.get(codeCur[0]);
                 outputFile.write(cur);
 
                 sym = cur.charAt(0);
@@ -111,18 +117,21 @@ class Compressor {
             switch (config.getMode()) {
             case COMPRESS:
                 inputFile = new BufferedReader(new FileReader(in));
+                Logger.get().registerLog(Logger.MsgType.INFO, in + " file opened");
                 writer = new BitWriter(new BufferedWriter(new FileWriter(out)));
+                Logger.get().registerLog(Logger.MsgType.INFO, out + " file opened");
                 break;
             case DECOMPRESS:
                 outputFile = new BufferedWriter(new FileWriter(out));
+                Logger.get().registerLog(Logger.MsgType.INFO, out + " file opened");
                 reader = new BitReader(new BufferedReader(new FileReader(in)));
+                Logger.get().registerLog(Logger.MsgType.INFO, in + " file opened");
                 break;
             }
         } catch (IOException e) {
             Logger.get().registerFatalLog(Logger.MsgType.BAD_FILE, e.getMessage());
             return false;
         }
-        Logger.get().registerLog(Logger.MsgType.INFO, "Opened files " + in + " " + out);
         return true;
     }
 
