@@ -43,7 +43,6 @@ class Compressor {
             int trueSize;
 
             while ((trueSize = inputFile.read(syms)) != -1) {
-                //syms += "\n";
                 for (int i = 0; i < trueSize; i++) {
                     toFindInDict = toFindInDict.replace(toFindInDict.charAt(0), syms[i]);
 
@@ -86,16 +85,14 @@ class Compressor {
                 Logger.get().registerLog(Logger.MsgType.BAD_FILE, "Empty file");
             String old = dictionary.get(codeOld[0]);
             outputFile.write(old);
-            char sym;
+            char sym = 'a';
 
             while (reader.readCode(codeCur)) {
                 String cur;
-                if (codeCur[0] >= dictionary.size()) {
-                    Logger.get().registerFatalLog(Logger.MsgType.BAD_READ, "No " + codeCur[0] + " code");
-                    outputFile.close();
-                    return;
-                }
-                cur = dictionary.get(codeCur[0]);
+                if (codeCur[0] >= dictionary.size())
+                    cur = dictionary.get(codeOld[0]) + new String(new char[]{sym});
+                else
+                    cur = dictionary.get(codeCur[0]);
                 outputFile.write(cur);
 
                 sym = cur.charAt(0);
