@@ -1,7 +1,7 @@
 import java.util.logging.Logger;
 
 public class TrivialExecutor implements ExecutorInterface {
-    public Status setInputFile(String filename) {
+    public Status setInputFile( String filename ) {
         return Status.OK;
     }
     public Status setOutputFile( String filename ) {
