@@ -8,11 +8,11 @@ public class TrivialExecutor implements ExecutorInterface {
         return Status.OK;
     }
 
-    public Status setProducer( ExecutorInterface producer ) {
+    public Status setProducer( ProducerConsumerInterface producer ) {
         return Status.OK;
     }
 
-    public Status setConsumer( ExecutorInterface consumer ) {
+    public Status setConsumer( ProducerConsumerInterface consumer ) {
         return Status.OK;
     }
 
