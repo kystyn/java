@@ -1,6 +1,6 @@
 import java.util.logging.Logger;
 
-public class TrivialExecutor implements ExecutorInterface {
+public class TrivialExecutor extends ExecutorInterface {
     public Status setInputFile( String filename ) {
         return Status.OK;
     }
@@ -24,11 +24,11 @@ public class TrivialExecutor implements ExecutorInterface {
         return Status.OK;
     }
 
-    public Status put( byte[] ba ) {
+    protected Status put( byte[] ba ) {
         return Status.OK;
     }
 
-    public Status get( byte[] ba ) {
+    protected Status get( byte[] ba ) {
         return Status.OK;
     }
 }

@@ -1,2 +1,4 @@
-public interface ExecutorInterface extends ProducerConsumerInterface, ManagerExecutorInterface {
+public abstract class ExecutorInterface
+        extends ProducerConsumerInterface
+        implements ManagerExecutorInterface {
 }

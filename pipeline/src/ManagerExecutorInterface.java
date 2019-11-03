@@ -1,7 +1,7 @@
 import java.util.logging.Logger;
 
 public interface ManagerExecutorInterface {
-    Status setInputFile(String filename);
+    Status setInputFile( String filename );
     Status setOutputFile( String filename );
 
     Status setProducer( ProducerConsumerInterface producer );

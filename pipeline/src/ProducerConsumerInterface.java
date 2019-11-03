@@ -1,4 +1,4 @@
-public interface ProducerConsumerInterface {
-    Status put( byte[] ba );
-    Status get( byte[] ba );
+public abstract class ProducerConsumerInterface {
+    abstract protected Status put( byte[] ba );
+    abstract protected Status get( byte[] ba );
 }
