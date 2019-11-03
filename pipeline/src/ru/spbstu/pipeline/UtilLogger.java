@@ -1,7 +1,9 @@
+package ru.spbstu.pipeline;
+
 import java.util.logging.Level;
 
 /**
- * Decorates java.util.logging.Logger for unified interface.
+ * Decorates java.util.logging.ru.spbstu.pipeline.Logger for unified interface.
  */
 public final class UtilLogger implements Logger {
 
