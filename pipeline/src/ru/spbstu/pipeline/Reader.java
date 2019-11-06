@@ -3,5 +3,5 @@ package ru.spbstu.pipeline;
 /**
  * Represents reader.
  */
-interface Reader extends Executor {
+public interface Reader extends Executor {
 }
