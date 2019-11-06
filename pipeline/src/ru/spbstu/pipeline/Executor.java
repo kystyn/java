@@ -10,7 +10,7 @@ package ru.spbstu.pipeline;
  * ru.spbstu.pipeline.Logger logger
  * </p>
  */
-interface Executor extends Producer, RunnableWithStatus {
+public interface Executor extends Producer, RunnableWithStatus {
 }
 
 interface Producer {
