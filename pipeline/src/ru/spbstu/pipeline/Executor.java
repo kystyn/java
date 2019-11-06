@@ -5,19 +5,17 @@ package ru.spbstu.pipeline;
  * <p>
  * Should have ctor with params:
  * String confPath (path to executor config file)
+ * ArrayList<Executor> producers
  * Executor consumer
  * ru.spbstu.pipeline.Logger logger
  * </p>
  */
-public interface Executor extends Consumer, RunnableWithStatus {
+interface Executor extends Producer, Runnable {
 }
 
-interface Consumer {
+interface Producer {
 
-    void put(byte[] ba);
-}
+    Status status();
 
-interface RunnableWithStatus extends Runnable {
-
-    Status lastRunStatus();
+    byte[] result();
 }
