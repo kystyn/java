@@ -9,11 +9,10 @@ public class DefaultReader implements Reader {
     private static final int DEFAULT_BUFFER_SIZE = 512;
 
     private final InputStream is;
-    private final int bufferSize;
+    private final byte[] result;
     private final Executor consumer;
     private final Logger logger;
-
-    private Status lastRunStatus = Status.OK;
+    private Status status = Status.EMPTY;
 
     public DefaultReader(InputStream is, Executor consumer, Logger logger) {
         this(is, DEFAULT_BUFFER_SIZE, consumer, logger);
@@ -21,34 +20,35 @@ public class DefaultReader implements Reader {
 
     public DefaultReader(InputStream is, int bufferSize, Executor consumer, Logger logger) {
         this.is = is;
-        this.bufferSize = bufferSize;
+        this.result = new byte[bufferSize];
         this.consumer = consumer;
         this.logger = logger;
     }
 
     @Override
-    public Status lastRunStatus() {
-        return lastRunStatus;
+    public void run() {
+        status = Status.OK;
+
+        try {
+            int res = is.read(result, 0, result.length);
+            if (res == -1) {
+                logger.log(Level.INFO, "End of source file");
+                status = Status.EMPTY;
+            }
+            consumer.run();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "IO error", e);
+            status = Status.ERROR;
+        }
     }
 
     @Override
-    public void run() {
-        lastRunStatus = Status.OK;
+    public Status status() {
+        return status;
+    }
 
-        byte[] buff = new byte[bufferSize];
-        try {
-            while (is.read(buff, 0, bufferSize) != -1) {
-                consumer.put(buff);
-                consumer.run();
-                Status status = consumer.lastRunStatus();
-                if (status != Status.OK) {
-                    lastRunStatus = Status.CONSUMER_ERROR;
-                    return;
-                }
-            }
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "IO error", e);
-            lastRunStatus = Status.INTERNAL_ERROR;
-        }
+    @Override
+    public byte[] result() {
+        return result;
     }
 }
