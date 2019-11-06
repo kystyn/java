@@ -4,14 +4,14 @@ import java.util.List;
 
 public abstract class AbstractExecutor implements Executor {
 
-    private final Executor consumer;
+    private final Runnable consumer;
     private Status status;
 
     protected final List<Executor> producers;
     protected final Logger logger;
     protected byte[] result;
 
-    AbstractExecutor(List<Executor> producers, Executor consumer, Logger logger) {
+    AbstractExecutor(List<Executor> producers, Runnable consumer, Logger logger) {
         this.producers = producers;
         this.consumer = consumer;
         this.logger = logger;
@@ -35,7 +35,7 @@ public abstract class AbstractExecutor implements Executor {
     }
 
     @Override
-    public final byte[] result() {
+    public final byte[] get() {
         return result;
     }
 }

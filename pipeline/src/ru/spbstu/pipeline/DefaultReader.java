@@ -10,7 +10,7 @@ public class DefaultReader implements Reader {
 
     private final InputStream is;
     private final byte[] result;
-    private final Executor consumer;
+    private final Runnable consumer;
     private final Logger logger;
     private Status status = Status.EMPTY;
 
@@ -18,7 +18,7 @@ public class DefaultReader implements Reader {
         this(is, DEFAULT_BUFFER_SIZE, consumer, logger);
     }
 
-    public DefaultReader(InputStream is, int bufferSize, Executor consumer, Logger logger) {
+    public DefaultReader(InputStream is, int bufferSize, Runnable consumer, Logger logger) {
         this.is = is;
         this.result = new byte[bufferSize];
         this.consumer = consumer;
@@ -48,7 +48,7 @@ public class DefaultReader implements Reader {
     }
 
     @Override
-    public byte[] result() {
+    public byte[] get() {
         return result;
     }
 }
