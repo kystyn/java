@@ -19,7 +19,7 @@ public abstract class AbstractExecutor implements Executor {
 
     /**
      * Runs logic of executor.
-     * @return Success of error.
+     * @return Success or error.
      */
     abstract Status execute();
 

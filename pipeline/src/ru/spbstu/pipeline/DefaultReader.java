@@ -37,7 +37,7 @@ public class DefaultReader implements Reader {
             }
             consumer.run();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "IO error", e);
+            logger.log(Level.SEVERE, "Reading error", e);
             status = Status.ERROR;
         }
     }

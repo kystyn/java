@@ -29,7 +29,7 @@ public class DefaultWriter implements Writer {
         try {
             os.write(producer.get());
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Write error", e);
+            logger.log(Level.SEVERE, "Writing error", e);
             status = Status.ERROR;
         }
     }

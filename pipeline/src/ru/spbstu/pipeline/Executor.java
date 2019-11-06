@@ -5,7 +5,7 @@ package ru.spbstu.pipeline;
  * <p>
  * Should have ctor with params:
  * String confPath (path to executor config file)
- * ArrayList<Executor> producers
+ * List<Executor> producers
  * Runnable consumer
  * ru.spbstu.pipeline.Logger logger
  * </p>
