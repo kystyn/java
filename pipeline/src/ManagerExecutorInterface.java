@@ -10,4 +10,5 @@ public interface ManagerExecutorInterface {
     Status run();
 
     Status setLogger( Logger logger );
+    Status setConfig( String configName );
 }
