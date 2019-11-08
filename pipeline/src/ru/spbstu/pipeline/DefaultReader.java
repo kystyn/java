@@ -4,24 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-public class DefaultReader implements Reader {
+public final class DefaultReader implements Reader {
 
     private static final int DEFAULT_BUFFER_SIZE = 512;
 
     private final InputStream is;
     private final byte[] result;
-    private final Runnable consumer;
+    private Runnable consumer;
     private final Logger logger;
     private Status status = Status.EMPTY;
 
-    public DefaultReader(InputStream is, Executor consumer, Logger logger) {
-        this(is, DEFAULT_BUFFER_SIZE, consumer, logger);
+    public DefaultReader(InputStream is, Logger logger) {
+        this(is, DEFAULT_BUFFER_SIZE, logger);
     }
 
-    public DefaultReader(InputStream is, int bufferSize, Runnable consumer, Logger logger) {
+    public DefaultReader(InputStream is, int bufferSize, Logger logger) {
         this.is = is;
         this.result = new byte[bufferSize];
-        this.consumer = consumer;
         this.logger = logger;
     }
 
@@ -50,5 +49,10 @@ public class DefaultReader implements Reader {
     @Override
     public byte[] get() {
         return result;
+    }
+
+    @Override
+    public void setConsumer(Runnable consumer) {
+        this.consumer = consumer;
     }
 }

@@ -1,19 +1,18 @@
 package ru.spbstu.pipeline;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractExecutor implements Executor {
 
-    private final Runnable consumer;
+    private Runnable consumer;
     private Status status;
 
-    protected final List<Executor> producers;
+    protected final List<Executor> producers = new ArrayList<Executor>();
     protected final Logger logger;
     protected byte[] result;
 
-    AbstractExecutor(List<Executor> producers, Runnable consumer, Logger logger) {
-        this.producers = producers;
-        this.consumer = consumer;
+    AbstractExecutor(Logger logger) {
         this.logger = logger;
     }
 
@@ -37,5 +36,15 @@ public abstract class AbstractExecutor implements Executor {
     @Override
     public final byte[] get() {
         return result;
+    }
+
+    @Override
+    public final void addProducer(Executor producer) {
+        producers.add(producer);
+    }
+
+    @Override
+    public final void setConsumer(Runnable consumer) {
+        this.consumer = consumer;
     }
 }
