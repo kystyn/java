@@ -10,8 +10,9 @@ public final class DefaultReader implements Reader {
 
     private final InputStream is;
     private final byte[] result;
-    private Runnable consumer;
     private final Logger logger;
+
+    private Runnable consumer;
     private Status status = Status.EMPTY;
 
     public DefaultReader(InputStream is, Logger logger) {
