@@ -8,13 +8,15 @@ public class TrivialExecutor implements ExecutorInterface {
         return Status.OK;
     }
 
-    public Status setProducer( ProducerConsumerInterface producer ) {
+    public Status setProducer( ExecutorInterface producer ) {
         return Status.OK;
     }
 
-    public Status setConsumer( ProducerConsumerInterface consumer ) {
+    public Status setConsumer( ExecutorInterface consumer ) {
         return Status.OK;
     }
+
+    public Status setConfig( String configName ){return Status.OK;}
 
     public Status run() {
         return Status.OK;
