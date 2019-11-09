@@ -8,11 +8,11 @@ public class TrivialExecutor implements ExecutorInterface {
         return Status.OK;
     }
 
-    public Status setProducer( ProducerConsumerInterface producer ) {
+    public Status setProducer( ExecutorInterface producer ) {
         return Status.OK;
     }
 
-    public Status setConsumer( ProducerConsumerInterface consumer ) {
+    public Status setConsumer( ExecutorInterface consumer ) {
         return Status.OK;
     }
 
@@ -29,6 +29,10 @@ public class TrivialExecutor implements ExecutorInterface {
     }
 
     public Status get( byte[] ba ) {
+        return Status.OK;
+    }
+
+    public Status setConfig( String filename ) {
         return Status.OK;
     }
 }
