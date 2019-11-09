@@ -11,4 +11,5 @@ public interface ManagerExecutorInterface {
 
     Status setLogger( Logger logger );
     Status setConfig( String configName );
+
 }
