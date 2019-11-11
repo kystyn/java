@@ -1,4 +1,4 @@
 package ru.spbstu.pipeline;
 
-public interface Writer extends Consumer {
+public interface Writer extends Consumer, InitializableConsumer {
 }

@@ -8,5 +8,7 @@ package ru.spbstu.pipeline;
  * ru.spbstu.pipeline.logging.Logger logger
  * </p>
  */
-public interface Executor extends Producer, Consumer {
+public interface Executor extends
+        Producer, InitializableProducer,
+        Consumer, InitializableConsumer {
 }
