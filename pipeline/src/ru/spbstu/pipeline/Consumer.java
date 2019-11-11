@@ -5,7 +5,7 @@ import java.util.List;
 public interface Consumer extends Fallible, Runnable {
 
     /**
-     * Loads ready data from producer.
+     * Checks producer status and loads ready data from it if OK.
      */
     void loadDataFrom(Producer producer);
 }
