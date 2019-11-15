@@ -1,6 +1,6 @@
 package ru.spbstu.pipeline;
 
-interface Fallible {
+public interface Fallible {
 
     Status status();
 }

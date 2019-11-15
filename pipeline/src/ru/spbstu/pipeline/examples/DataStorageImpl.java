@@ -18,12 +18,12 @@ public class DataStorageImpl implements DataStorage {
     public DataStorageImpl(char[] chars) {
         this.bytes = null;
         this.chars = chars;
-        // TODO convert to string
+        this.string = null; // TODO convert char array to string
     }
 
     public DataStorageImpl(String string) {
         this.bytes = null;
-        // TODO convert to char array
+        this.chars = null; // TODO convert string to char array
         this.string = string;
     }
 
