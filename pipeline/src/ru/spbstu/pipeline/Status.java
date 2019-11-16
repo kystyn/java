@@ -2,5 +2,8 @@ package ru.spbstu.pipeline;
 
 public enum Status {
     OK,
-    ERROR
+    ERROR,
+    READER_ERROR,
+    EXECUTOR_ERROR,
+    WRITER_ERROR
 }
