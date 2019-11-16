@@ -4,7 +4,10 @@ import java.util.List;
 
 public interface Producer extends Fallible {
 
-    DataStorage get();
+    /**
+     * @return Byte array of even length.
+     */
+    Object get();
 }
 
 interface InitializableProducer {
