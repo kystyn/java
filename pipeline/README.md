@@ -15,3 +15,7 @@
 ## Requirements
 
 - java8
+
+## Разное
+
+Вопросы и пожелания, пожалуйста, пишите в [issues](https://github.com/kystyn/java/issues).
