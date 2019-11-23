@@ -8,7 +8,7 @@
    consumer checks producer's status and loads data if OK.
    `Status is OK if and only if get() output contains value`.
    Producer should return some type from consumer's acceptable type list
-   or ```empty``` if it cant's.
+   or ```empty``` if it can't.
    3. consumer.run()
    4. Consumer becomes producer.
 
