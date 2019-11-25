@@ -15,3 +15,7 @@ if it cannot provide data in one of specified types, it sets error status.
 ## Requirements
 
 - java8
+
+## Разное
+
+Вопросы и пожелания, пожалуйста, пишите в [issues](https://github.com/kystyn/java/issues).
