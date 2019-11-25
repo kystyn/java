@@ -1,16 +1,16 @@
 ## Workflow
 
-- Manager creates pipeline and calls Reader.run().
-- Reader reads blocks in loop.
+- Manager creates pipeline by adding producers to consumers and vice versa.
+- Producer asks Consumer's acceptable types, 
+if it cannot provide data in one of specified types, it sets error status.
+- Manager calls Reader.run().
+- Reader reads blocks in loop, it now acts as Producer.
 - Producer
    1. Prepare result data
    2. consumer.loadDataFrom(this) &mdash; 
    consumer checks producer's status and loads data if OK.
-   `Status is OK if and only if get() output contains value`.
-   Producer should return some type from consumer's acceptable type list
-   or ```empty``` if it can't.
    3. consumer.run()
-   4. Consumer becomes producer.
+   4. consumer becomes producer.
 
 ## Requirements
 
