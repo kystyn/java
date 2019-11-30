@@ -1,17 +1,30 @@
 package ru.spbstu.pipeline;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 public interface Producer extends Fallible {
 
+    interface DataAccessor {
+
+        Object get();
+        long size();
+    }
+
     /**
-     * @return Byte array of even length.
+     * @param typeName Canonical type name.
+     * @return Data access for specified type.
      */
-    Object get();
-}
+    DataAccessor getAccessor(String typeName);
 
-interface InitializableProducer {
-
-    void addConsumer(Consumer consumer);
-    void addConsumers(List<Consumer> consumers);
+    /**
+     * Types of output data producer can produce.
+     * <p>
+     * Class canonical name is for example String.class.getCanonicalName().
+     * <p>
+     * @return Set of canonical names of producer's possible output types.
+     */
+    default Set<String> outputDataTypes() {
+        return Collections.singleton(byte[].class.getCanonicalName());
+    }
 }

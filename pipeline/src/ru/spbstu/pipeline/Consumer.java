@@ -1,17 +1,13 @@
 package ru.spbstu.pipeline;
 
-import java.util.List;
-
-public interface Consumer extends Runnable {
+public interface Consumer extends Fallible, Runnable {
 
     /**
-     * Checks producer status and loads ready data from it if OK.
+     * Checks producer status and loads ready data from it if success.
+     *
+     * @return True if data read, waiting for next portion.
+     * False otherwise waiting for additional data portion,
+     * producer then should provide more data next time.
      */
-    void loadDataFrom(Producer producer);
-}
-
-interface InitializableConsumer {
-
-    void addProducer(Producer producer);
-    void addProducers(List<Producer> producers);
+    boolean loadDataFrom(Producer producer);
 }
