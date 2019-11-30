@@ -19,7 +19,9 @@ public interface Producer extends Fallible {
 
     /**
      * Types of output data producer can produce.
+     * <p>
      * Class canonical name is for example String.class.getCanonicalName().
+     * <p>
      * @return Set of canonical names of producer's possible output types.
      */
     default Set<String> outputDataTypes() {
