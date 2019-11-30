@@ -1,4 +1,4 @@
-[Свежий jar](https://drive.google.com/open?id=1ZcOctIMLc2fdtHtJN_2ruftZM07ah9Q2).
+[Свежий jar](https://drive.google.com/open?id=1Hz3ShIBX2MDXudV0fvKoOt3_2TpapCdp).
 
 ## Workflow
 
