@@ -11,9 +11,15 @@ public interface Consumer extends Fallible, Runnable {
     void loadDataFrom(Producer producer);
 
     /**
+     * Sets accessor for data, produced by producer.
+     * @param producer To get data from.
+     */
+    void setAccessorFor(Producer producer, Accessor accessor);
+
+    /**
      * Types of input data consumer can work with.
-     * Class full name is for example String.class.getCanonicalName().
-     * @return Set of full names of accessible input types for consumer.
+     * Class canonical name is for example String.class.getCanonicalName().
+     * @return Set of canonical names of accessible input types for consumer.
      */
     default Set<String> acceptableInputTypes() {
         return Collections.singleton(byte[].class.getCanonicalName());
