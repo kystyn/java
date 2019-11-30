@@ -1,3 +1,5 @@
+[Свежий jar](https://drive.google.com/open?id=1gsrM5xF2WU7lLzAkjcxTmrO4OG-2-BQF).
+
 ## Workflow
 
 - Manager creates pipeline by adding producers to consumers and vice versa.
