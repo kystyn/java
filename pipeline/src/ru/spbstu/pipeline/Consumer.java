@@ -5,9 +5,7 @@ public interface Consumer extends Fallible, Runnable {
     /**
      * Checks producer status and loads ready data from it if success.
      *
-     * @return True if data read, waiting for next portion.
-     * False otherwise waiting for additional data portion,
-     * producer then should provide more data next time.
+     * @return Length of loaded data part from the beginning of provided buffer.
      */
-    boolean loadDataFrom(Producer producer);
+    long loadDataFrom(Producer producer);
 }
