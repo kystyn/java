@@ -5,6 +5,8 @@ import java.util.Set;
 
 public interface Producer extends Fallible {
 
+    Set<String> DEFAULT_TYPES = Collections.singleton(byte[].class.getCanonicalName());
+
     interface DataAccessor {
 
         Object get();
@@ -25,6 +27,6 @@ public interface Producer extends Fallible {
      * @return Set of canonical names of producer's possible output types.
      */
     default Set<String> outputDataTypes() {
-        return Collections.singleton(byte[].class.getCanonicalName());
+        return DEFAULT_TYPES;
     }
 }
