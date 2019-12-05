@@ -17,7 +17,7 @@ Finds acceptable type and asks DataAccessor for this type.
       - If provided data is not enough return 0, producer will provide more data next time.
       - If consumer is able to process some part of provided data, 
       it returns length of such part. In that case producer should cache 
-      data from \[loaded, end\] part of data array and provide it with next portion next time. 
+      rest part of data array and provide it with next portion next time.
    3. consumer.run()
    4. consumer becomes producer.
 
