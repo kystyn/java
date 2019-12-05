@@ -20,10 +20,8 @@ public interface Producer extends Fallible {
     DataAccessor getAccessor(String typeName);
 
     /**
-     * Types of output data producer can produce.
-     * <p>
-     * Class canonical name is for example String.class.getCanonicalName().
-     * <p>
+     * <p>Types of output data producer can produce.</p>
+     * <p>Class canonical name is for example String.class.getCanonicalName().</p>
      * @return Set of canonical names of producer's possible output types.
      */
     default Set<String> outputDataTypes() {
