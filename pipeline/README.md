@@ -2,6 +2,7 @@
 [jar для второй](https://drive.google.com/open?id=1enFfHAl7KUx4K1PzqRLcS9pBKdzfvK_6). 
 Последний [коммит](https://github.com/kystyn/java/commit/251223acbfc958c7c4babe92bca1b11297c665df) 
 до миграции на версию для третьей лабы.
+Исходники в [зипе](https://drive.google.com/open?id=1lqTLf8e7UtFzXiJ1Y8C7SndcxpFdaFU8).
 
 [jar для третьей](https://drive.google.com/open?id=141uUtj4LnfpcM8gN7_uGYpYSgb128WdG)
 
