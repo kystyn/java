@@ -1,11 +1,11 @@
 
 [jar для второй](https://drive.google.com/open?id=1enFfHAl7KUx4K1PzqRLcS9pBKdzfvK_6) 
 
-[jar для третьей](https://drive.google.com/open?id=1rdsRSw4cQU8vrSoTZ9LZ3BWSKoQcNioE)
+[jar для третьей](https://drive.google.com/open?id=141uUtj4LnfpcM8gN7_uGYpYSgb128WdG)
 
 ## Workflow
 
-- Manager creates pipeline by adding producers to consumers and vice versa.
+- Manager creates pipeline by adding producers to consumers and vice versa. Initially executors should have ```status=Status.OK```.
 - Consumer asks types producer can produce. 
 Finds acceptable type and asks DataAccessor for this type.
 - Manager calls Reader.run().
