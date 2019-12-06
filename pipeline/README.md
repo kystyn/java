@@ -5,7 +5,8 @@
 
 ## Workflow
 
-- Manager creates pipeline by adding producers to consumers and vice versa. Initially executors should have ```status=Status.OK```.
+- Manager creates executors using theirs ```String``` canonical names via reflections. Initially executors should have ```status=Status.OK```.
+- Manager creates pipeline by adding producers to consumers and vice versa, if adding failed, executors should set ```status=Status.EXECUTOR_ERROR```. 
 - Consumer asks types producer can produce. 
 Finds acceptable type and asks DataAccessor for this type.
 - Manager calls Reader.run().
@@ -23,7 +24,7 @@ Finds acceptable type and asks DataAccessor for this type.
 
 ## Requirements
 
-- java8
+- SDK 1.8
 
 ## Разное
 
