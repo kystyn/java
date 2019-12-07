@@ -123,7 +123,7 @@ public DataAccessor getAccessor(@NotNull final String typeName) {
     - ```new String(chars).getBytes("UTF-16BE")``` (char\[\] -> byte\[\])c
     - ```new String(bytes, "UTF-16BE").toCharArray()``` (byte\[\] -> char\[\])
     - к тому же можно полагаться что размер ```byte[]``` в этой кодировке
-    будет вдвое длиннее соттветствующего ```char[]```
+    будет вдвое длиннее соответствующего ```char[]```.
 
 
 ## Требования
