@@ -1,8 +1,6 @@
 
-[jar для второй](https://drive.google.com/open?id=1enFfHAl7KUx4K1PzqRLcS9pBKdzfvK_6). 
-Последний [коммит](https://github.com/kystyn/java/commit/251223acbfc958c7c4babe92bca1b11297c665df) 
-до миграции на версию для третьей лабы.
-Исходники в [зипе](https://drive.google.com/open?id=1lqTLf8e7UtFzXiJ1Y8C7SndcxpFdaFU8).
+[jar для второй](https://drive.google.com/open?id=1V1403Yh38zu5KnZhIjAyO3Tafi8ATXpO). 
+Код второй в ветке lab2
 
 [jar для третьей](https://drive.google.com/open?id=1sYT5ZSvtTemLk1aUKl89PxvsbyJ8ovta)
 
