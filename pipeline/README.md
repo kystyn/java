@@ -28,6 +28,12 @@ Finds acceptable type and asks DataAccessor for this type.
 ## Requirements
 
 - SDK 1.8
+- Входной файл должен быть в кодировке UTF-16BE 
+(можно в идее выбрать справа снизу и переконвертировать)
+- Тогда конвертация ваглядит так:
+    - ```new String(chars).getBytes(UTF-16BE)``` (char\[\] -> byte\[\])c
+    - ```new String(bytes, charset).toCharArray()``` (byte\[\] -> char\[\])
+
 
 ## Разное
 
