@@ -1,17 +1,16 @@
 package ru.spbstu.pipeline;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-public interface Consumer extends Runnable {
+public interface Consumer extends Fallible, Runnable {
 
-    /**
-     * Checks producer status and loads ready data from it if OK.
-     */
-    void loadDataFrom(Producer producer);
+    void loadDataFrom(@NotNull Producer producer);
 }
 
 interface InitializableConsumer {
 
-    void addProducer(Producer producer);
-    void addProducers(List<Producer> producers);
+    void addProducer(@NotNull Producer producer);
+    void addProducers(@NotNull List<Producer> producers);
 }

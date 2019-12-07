@@ -1,17 +1,16 @@
 package ru.spbstu.pipeline;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-public interface Producer extends Fallible {
+public interface Producer {
 
-    /**
-     * @return Byte array of even length.
-     */
-    Object get();
+    @NotNull byte[] get();
 }
 
 interface InitializableProducer {
 
-    void addConsumer(Consumer consumer);
-    void addConsumers(List<Consumer> consumers);
+    void addConsumer(@NotNull Consumer consumer);
+    void addConsumers(@NotNull List<Consumer> consumers);
 }

@@ -1,5 +1,7 @@
 package ru.spbstu.pipeline.logging;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.logging.Level;
 
 /**
@@ -7,33 +9,34 @@ import java.util.logging.Level;
  */
 public final class UtilLogger implements Logger {
 
+    @NotNull
     private java.util.logging.Logger logger;
 
-    public static UtilLogger of(java.util.logging.Logger logger) {
+    public static UtilLogger of(@NotNull java.util.logging.Logger logger) {
         return new UtilLogger(logger);
     }
 
-    private UtilLogger(java.util.logging.Logger logger) {
+    private UtilLogger(@NotNull java.util.logging.Logger logger) {
         this.logger = logger;
     }
 
     @Override
-    public void log(String msg) {
+    public void log(@NotNull String msg) {
         log(DEFAULT_LEVEL, msg);
     }
 
     @Override
-    public void log(String msg, Throwable thrown) {
+    public void log(@NotNull String msg, @NotNull Throwable thrown) {
         log(DEFAULT_LEVEL, msg, thrown);
     }
 
     @Override
-    public void log(Level level, String msg) {
+    public void log(@NotNull Level level, @NotNull String msg) {
         logger.log(level, msg);
     }
 
     @Override
-    public void log(Level level, String msg, Throwable thrown) {
+    public void log(@NotNull Level level, @NotNull String msg, @NotNull Throwable thrown) {
         logger.log(level, msg, thrown);
     }
 }
