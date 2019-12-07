@@ -4,7 +4,7 @@
 до миграции на версию для третьей лабы.
 Исходники в [зипе](https://drive.google.com/open?id=1lqTLf8e7UtFzXiJ1Y8C7SndcxpFdaFU8).
 
-[jar для третьей](https://drive.google.com/open?id=141uUtj4LnfpcM8gN7_uGYpYSgb128WdG)
+[jar для третьей](https://drive.google.com/open?id=1sYT5ZSvtTemLk1aUKl89PxvsbyJ8ovta)
 
 
 ## Lab 3+
