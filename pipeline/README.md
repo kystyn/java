@@ -32,7 +32,7 @@ Finds acceptable type and asks DataAccessor for this type.
 (можно в идее выбрать справа снизу и переконвертировать)
 - Тогда конвертация ваглядит так:
     - ```new String(chars).getBytes(UTF-16BE)``` (char\[\] -> byte\[\])c
-    - ```new String(bytes, charset).toCharArray()``` (byte\[\] -> char\[\])
+    - ```new String(bytes, UTF-16BE).toCharArray()``` (byte\[\] -> char\[\])
 
 
 ## Разное
