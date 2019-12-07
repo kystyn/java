@@ -6,38 +6,120 @@
 
 [jar для третьей](https://drive.google.com/open?id=141uUtj4LnfpcM8gN7_uGYpYSgb128WdG)
 
-## Workflow
 
-- Manager creates executors using theirs ```String``` canonical names via reflections. Initially executors should have ```status=Status.OK```.
-- Manager creates pipeline by adding producers to consumers and vice versa, if adding failed, executors should set ```status=Status.EXECUTOR_ERROR```. 
-- Consumer asks types producer can produce. 
-Finds acceptable type and asks DataAccessor for this type.
-- Manager calls Reader.run().
-- Reader reads blocks in loop, it now acts as Producer.
-- Producer
-   1. Prepare result data
-   2. consumer.loadDataFrom(this) &mdash; 
-   consumer checks producer's status and saves link to data if OK.
-      - If provided data is not enough return 0, producer will provide more data next time.
-      - If consumer is able to process some part of provided data, 
-      it returns length of such part. In that case producer should cache 
-      rest part of data array and provide it with next portion next time.
-   3. consumer.run()
-   4. consumer becomes producer.
-   
+## Lab 3+
+
+### Знакомство
+
+Manager читает конфиг и выстраивает экзекуторов на конвейер. 
+Делает он это в порядке, описанном в конфиге. 
+Конвейер получается знакомством соседних экзекуторов.
+
+Считаем что у нас на руках два экзекутора, P и С. Будем их знакомить.
+
+1. ```P.addConsumer(C);```
+    - тут P просто сохраняет ссылку на C.
+2. ```C.addProducer(P);```
+    1. C вызывает ```P.outputDataTypes()```
+    2. ```P.outputDataTypes()``` возвращает множество строк - имена типов, 
+    в виде которых P может отдавать данные.
+    3. С из множества имен типов выбирает один - тот, 
+    в каком C хочет получать данные (напр, ```byte[]```).
+    4. С вызывает ```P.getAccessor(byte[].class.getCanonicalName)``` 
+    (подставляем имя того типа, который выбрали).
+    5. ```P.getAccessor``` возвращает экземпляр класса, 
+    который у продьюсера вложенный и унаследован от ```Producer.DataAccessor```.
+    C сохраняет у себя этот экземпляр.
+    
+На этом знакомство закончилось!
+
+##### DataAccessor
+
+Посмотрим что это такое. Вот пример куска кода продьюсера:
+```
+
+private Object output;
+
+public final class DataAccessor implements Producer.DataAccessor {
+
+    @NotNull
+    @Override
+    public Object get() {
+        Objects.requireNonNull(output);
+        return output;  // некоторое поле в P
+    }
+
+    @Override
+    public long size() {
+        Objects.requireNonNull(output);
+        
+        // тут мы знаем, что output это массив, 
+        // если строка, вернули бы ((String) output).length()
+        return ((byte[]) output).length;  
+    }
+}
+
+@NotNull
+@Override
+public DataAccessor getAccessor(@NotNull final String typeName) {
+    Objects.requireNonNull(dataAccessor);
+    // сохраняем себе имя типа, в который будем конвертировать перед отдачей.
+    this.outputTypeName = typeName; 
+    return new DataAccessor();
+}
+```
+
+Таким образом, ```DataAccessor``` позволяет C ходить в P и забирать данные.
+
+Также, ```DataAccessor``` может в ```get()``` содержать логику конвертации в выбранный С тип данных,
+зависит от реализации.
+
+
+### Рабочий процесс конвейера
+
+Итак, мы познакомили всех экзекуторов, тем самым сделали конвейер.
+
+##### Запуск!
+
+1. Manager (M) вызывает у первого на конвейере, ридера (R), метод ```R.run()```.
+2. В ```run()``` ридер в цикле читает файл по блокам и отправляет на конвейер, работает как продьюсер.
+
+##### Взаимодействие P и C
+
+Допустим, продьюсер обработал данные 
+(если продьюсер здесь это ридер, то просто прочитал данные из файла),
+сконвертировал в нужный C тип и сложил в переменную output. 
+
+Т.е. мы находимся в методе ```run()``` у P.
+
+Дальше:
+1. P вызывает у C ```C.loadDataFrom(this);```
+    1. Там С забирает ссылку на данные у продьюсера через сохраненный аксессор:
+    ```input = dataAccessor.get()```
+    2. Если размер у данных (```dataAccessor.size()```) не равен ожидаемому, ```return 0```
+    3. Иначе ```return dataAccessor.size();```
+2. P смотрит что вернул ```C.loadDataFrom(this);```
+    1. Если вернулся ноль, ставим ```status = Status.EXECUTOR_ERROR;``` и делаем ```return```
+    2. Если не ноль, вызываем ```C.run()```
+3. После того как ```C.run()``` отработал, ставим ```this.status = C.status()```
+    - таким образом статус ошибки, если появится, дойдет до R и тот завершит цикл.
+
    
 ## Типы
-- byte[]
-- char[]
-- String
+- поддерживаем
+    - byte[]
+    - char[]
+    - String
 - Входной файл должен быть в кодировке UTF-16BE
-(можно в идее выбрать справа снизу и переконвертировать)
-- Тогда конвертация ваглядит так:
+(можно в idea выбрать справа снизу и переконвертировать)
+- Тогда конвертация в коде ваглядит так:
     - ```new String(chars).getBytes("UTF-16BE")``` (char\[\] -> byte\[\])c
     - ```new String(bytes, "UTF-16BE").toCharArray()``` (byte\[\] -> char\[\])
+    - к тому же можно полагаться что размер ```byte[]``` в этой кодировке
+    будет вдвое длиннее соттветствующего ```char[]```
 
 
-## Requirements
+## Требования
 
 - SDK 1.8
 

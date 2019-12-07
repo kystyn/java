@@ -1,6 +1,8 @@
 package ru.spbstu.pipeline;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Fallible {
 
-    Status status();
+    @NotNull Status status();
 }

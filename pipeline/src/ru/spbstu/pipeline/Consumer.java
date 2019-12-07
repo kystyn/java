@@ -1,11 +1,16 @@
 package ru.spbstu.pipeline;
 
-public interface Consumer extends Runnable {
+import org.jetbrains.annotations.NotNull;
+
+public interface Consumer extends Fallible, Runnable {
 
     /**
-     * Checks producer status and saves link to ready data from it if {@link Status}.OK.
-     * @return Length of data part from the beginning, that will be processed in run().
-     * Rest part should be cached on producer's side.
+     * Saves link to data, provided by producer
+     * (via get() in {@link ru.spbstu.pipeline.Producer.DataAccessor}).
+     * Does not modify data (make copy if needed).
+     *
+     * @return 0 if unable to process provided data.
+     * length() value from {@link ru.spbstu.pipeline.Producer.DataAccessor} otherwise.
      */
-    long loadDataFrom(Producer producer);
+    long loadDataFrom(@NotNull Producer producer);
 }
