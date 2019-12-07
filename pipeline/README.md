@@ -24,16 +24,22 @@ Finds acceptable type and asks DataAccessor for this type.
       rest part of data array and provide it with next portion next time.
    3. consumer.run()
    4. consumer becomes producer.
+   
+   
+## Типы
+- byte[]
+- char[]
+- String
+- Входной файл должен быть в кодировке UTF-16BE
+(можно в идее выбрать справа снизу и переконвертировать)
+- Тогда конвертация ваглядит так:
+    - ```new String(chars).getBytes("UTF-16BE")``` (char\[\] -> byte\[\])c
+    - ```new String(bytes, "UTF-16BE").toCharArray()``` (byte\[\] -> char\[\])
+
 
 ## Requirements
 
 - SDK 1.8
-- Входной файл должен быть в кодировке UTF-16BE 
-(можно в идее выбрать справа снизу и переконвертировать)
-- Тогда конвертация ваглядит так:
-    - ```new String(chars).getBytes(UTF-16BE)``` (char\[\] -> byte\[\])c
-    - ```new String(bytes, UTF-16BE).toCharArray()``` (byte\[\] -> char\[\])
-
 
 ## Разное
 
