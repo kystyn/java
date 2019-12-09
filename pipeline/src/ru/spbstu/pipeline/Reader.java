@@ -1,9 +1,7 @@
 package ru.spbstu.pipeline;
 
 /**
- * <ul>
- *     <li>Reads data in loop.</li>
- * </ul>
+ * Reads data in loop.
  */
 public interface Reader extends Producer, InitializableProducer, Runnable {
 }
