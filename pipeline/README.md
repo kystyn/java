@@ -130,7 +130,7 @@ public DataAccessor getAccessor(@NotNull final String typeName) {
 - Входной файл должен быть в кодировке UTF-16BE
 (можно в idea выбрать справа снизу и переконвертировать)
 - Тогда конвертация в коде ваглядит так:
-    - ```new String(chars).getBytes("UTF-16BE")``` (char\[\] -> byte\[\])c
+    - ```new String(chars).getBytes("UTF-16BE")``` (char\[\] -> byte\[\])
     - ```new String(bytes, "UTF-16BE").toCharArray()``` (byte\[\] -> char\[\])
     - к тому же можно полагаться что размер ```byte[]``` в этой кодировке
     будет вдвое длиннее соответствующего ```char[]```.
