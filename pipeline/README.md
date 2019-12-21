@@ -50,12 +50,11 @@ Manager читает конфиг и выстраивает экзекуторо
 
 private Object output;
 
-public final class DataAccessor implements Producer.DataAccessor {
+private final class DataAccessor implements Producer.DataAccessor {
 
     @NotNull
     @Override
     public Object get() {
-        Objects.requireNonNull(output);
         return output;  // некоторое поле в P
     }
 
@@ -71,8 +70,7 @@ public final class DataAccessor implements Producer.DataAccessor {
 
 @NotNull
 @Override
-public DataAccessor getAccessor(@NotNull final String typeName) {
-    Objects.requireNonNull(dataAccessor);
+public Producer.DataAccessor getAccessor(@NotNull final String typeName) {
     // сохраняем себе имя типа, в который будем конвертировать перед отдачей.
     this.outputTypeName = typeName; 
     return new DataAccessor();
