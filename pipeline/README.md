@@ -204,10 +204,11 @@ public Producer.DataAccessor getAccessor(@NotNull final String typeName) {
     ...
     for (Executor e : executors) {
         Thread thread = new Thread(e);
-        thread.start();
+        thread.start(); 
     }
     ...
     ```
+    [Ничего страшного](https://stackoverflow.com/questions/9651842/will-main-thread-exit-before-child-threads-complete-execution), что главный поток живет меньше дочерних.
 - В `run()` каждого `E` находится цикл, в котором он запрашивает данные у `R`,
 обрабатывает и отдает в `W`.
 - Цикл работает, пока `R` не сообщит, что данных больше не будет.
@@ -224,6 +225,7 @@ public Producer.DataAccessor getAccessor(@NotNull final String typeName) {
 Несложно удовлетворить требованиям выше на интерфейсе для третьей лабы.
 (Но в принципе можно воротить что-то принципиально новое).
 
+- В общении `R` и `E` инициатором является `E`, поэтому логика `R` отрабатывает в `DataAccessor.get()`, и, конечно, `R` никакой `loadDataFrom` не дергает. Вниз по течению конвейера все по-старому.
 - `R` может узнавать, какой `E` к нему обращается по `DataAccessor`, который ему был выдан.
 - Для каждого `E` можно выделить в `R` по ячейке памяти, к которой у него будет доступ через `DataAccessor`.
 В этих ячейках хранятся ссылки на данные, поэтому операции с ними атомарны (синхронизация потоков на них не нужна).
