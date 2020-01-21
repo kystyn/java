@@ -188,7 +188,8 @@ public Producer.DataAccessor getAccessor(@NotNull final String typeName) {
 Теперь сделаем архиватор многопоточным. 
 
 Достаточно чтобы работала такая схема:
-![scheme]([![java-old-lab4.png](https://i.postimg.cc/jSdh4GXG/java-old-lab4.png)](https://postimg.cc/BXkDq7Rg))
+
+![scheme](https://i.postimg.cc/jSdh4GXG/java-old-lab4.png)
 
 #### Работа с потоками
 
