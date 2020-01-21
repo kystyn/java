@@ -199,16 +199,12 @@ public Producer.DataAccessor getAccessor(@NotNull final String typeName) {
 
 - `Manager` получает данные о количестве потоков из своего конфига, 
 знакомит работников с `R` и `W`, выставляя их на конвейер. 
-Затем создает для каждого по потоку, запускает их и ждет завершения:
+Затем создает для каждого по потоку и запускает их:
     ```
     ...
     for (Executor e : executors) {
         Thread thread = new Thread(e);
         thread.start();
-        threads.add(thread);
-    }
-    for (Thread t : threads) {
-        t.join();
     }
     ...
     ```
